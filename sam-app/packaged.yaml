@@ -1,7 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'sam-app
-
-  Sample SAM Template for sam-app
+Description: 'sam-app Sample SAM Template for sam-app
 
   '
 Globals:
@@ -27,7 +25,7 @@ Outputs:
 Resources:
   HelloWorldFunction:
     Properties:
-      CodeUri: s3://alexharvey3118/447c06bbc03dcd1b23220d2450918b99
+      CodeUri: s3://alexharvey3118/a88efe80a4b2c945eea9734a4bd3293e
       Events:
         HelloWorld:
           Properties:
@@ -37,4 +35,23 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python2.7
     Type: AWS::Serverless::Function
+  MyApi:
+    Properties:
+      DefinitionBody:
+        info:
+          title:
+            Ref: AWS::StackName
+        paths:
+          /get:
+            get:
+              responses: {}
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorldFunction.Arn}/invocations
+        swagger: 2.0
+      Name: Users
+      StageName: default
+    Type: AWS::Serverless::Api
 Transform: AWS::Serverless-2016-10-31

@@ -45,8 +45,9 @@ Resources:
                 responses: {}
                 httpMethod: "POST"
                 type: "aws_proxy"
+
 Outputs:
-  FunctioArn:
+  FunctionArn:
     Value: !GetAtt  HelloFunction.Arn
     Export:
       Name: HelloFunctionArn

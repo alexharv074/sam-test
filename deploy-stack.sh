@@ -12,7 +12,7 @@ cd $stack_name
 
 set -x
 
-#sam build || exit $?
+sam build || exit $?
 
 sam package \
   --output-template-file packaged.yaml \

@@ -14,7 +14,7 @@ Resources:
           Properties:
             Path: /
             Method: post
-            #RestApiId: !Ref ApiGateway1
+            RestApiId: !Ref MyApi
 
   LambdaInvokePermission:
     Type: AWS::Lambda::Permission

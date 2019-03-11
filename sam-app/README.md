@@ -7,19 +7,20 @@ This is a sample template for sam-app - Below is a brief explanation of what we 
 ├── README.md                   <-- This instructions file
 ├── event.json                  <-- API Gateway Proxy Integration event payload
 ├── hello_world                 <-- Source code for a lambda function
-│   ├── app.rb                  <-- Lambda function code
-│   ├── Gemfile                 <-- Ruby function dependencies
-├── template.yaml               <-- SAM template
-├── Gemfile                     <-- Ruby test/documentation dependencies
+│   ├── __init__.py
+│   ├── app.py                  <-- Lambda function code
+│   ├── requirements.txt        <-- Lambda function code
+├── template.yaml               <-- SAM Template
 └── tests                       <-- Unit tests
     └── unit
-        └── test_handler.rb
+        ├── __init__.py
+        └── test_handler.py
 ```
 
 ## Requirements
 
-* AWS CLI already configured with at Administrator permission
-* [Ruby 2.5 installed](https://www.ruby-lang.org/en/documentation/installation/)
+* AWS CLI already configured with Administrator permission
+* [Python 2.7 installed](https://www.python.org/downloads/)
 * [Docker installed](https://www.docker.com/community-edition)
 
 ## Setup process
@@ -54,7 +55,7 @@ Events:
 
 ## Packaging and deployment
 
-AWS Lambda Ruby runtime requires a flat folder with all dependencies including the application. SAM will use `CodeUri` property to know where to look up for both application and dependencies:
+AWS Lambda Python runtime requires a flat folder with all dependencies including the application. SAM will use `CodeUri` property to know where to look up for both application and dependencies:
 
 ```yaml
 ...
@@ -113,10 +114,12 @@ You can find more information and examples about filtering Lambda function logs 
 
 ## Testing
 
-Run our initial unit tests:
+
+Next, we install test dependencies and we run `pytest` against our `tests` folder to run our initial unit tests:
 
 ```bash
-ruby tests/unit/test_handler.rb
+pip install pytest pytest-mock --user
+python -m pytest tests/ -v
 ```
 
 ## Cleanup
@@ -133,7 +136,7 @@ Here are a few things you can try to get more acquainted with building serverles
 
 ### Learn how SAM Build can help you with dependencies
 
-* Uncomment lines on `app.rb`
+* Uncomment lines on `app.py`
 * Build the project with ``sam build --use-container``
 * Invoke with ``sam local invoke HelloWorldFunction --event event.json``
 * Update tests
@@ -149,12 +152,11 @@ Here are a few things you can try to get more acquainted with building serverles
 
 Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
 
-
 # Appendix
 
 ## Building the project
 
-[AWS Lambda requires a flat folder](https://docs.aws.amazon.com/lambda/latest/dg/ruby-package.html) with the application as well as its dependencies. When you make changes to your source code or dependency manifest,
+[AWS Lambda requires a flat folder](https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html) with the application as well as its dependencies in  deployment package. When you make changes to your source code or dependency manifest,
 run the following command to build your project local testing and deployment:
 
 ```bash
@@ -167,7 +169,6 @@ sam build --use-container
 ```
 
 By default, this command writes built artifacts to `.aws-sam/build` folder.
-
 
 ## SAM and AWS CLI commands
 
